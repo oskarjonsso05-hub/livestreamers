@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Search, Video, User, LogOut, LayoutDashboard } from 'lucide-react'
+import { Search, Video, User, LogOut, LayoutDashboard, CreditCard, History } from 'lucide-react'
 import { AuthModal } from '@/components/auth-modal'
 import Link from 'next/link'
 
@@ -44,6 +44,16 @@ export function Navbar() {
               <Link href="/dashboard">
                 <Button variant="ghost" className="hidden sm:flex gap-2 text-indigo-500 font-semibold">
                   <LayoutDashboard className="w-4 h-4" /> Dashboard
+                </Button>
+              </Link>
+              <Link href="/my-streams">
+                <Button variant="ghost" className="hidden sm:flex gap-2 text-indigo-500 font-semibold">
+                  <History className="w-4 h-4" /> Mina Streams
+                </Button>
+              </Link>
+              <Link href="/subscription">
+                <Button variant="ghost" className="hidden sm:flex gap-2 text-indigo-500 font-semibold">
+                  <CreditCard className="w-4 h-4" /> Abonnemang
                 </Button>
               </Link>
               <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white cursor-pointer">
