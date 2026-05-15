@@ -1,0 +1,63 @@
+'use client'
+
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Search, Video, User, LogOut } from 'lucide-react'
+
+export function Navbar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  return (
+    <nav className="fixed top-0 w-full z-50 bg-background border-b border-border h-16 flex items-center px-4 justify-between">
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 font-bold text-xl text-primary cursor-pointer">
+          <Video className="w-8 h-8 text-indigo-500" />
+          <span>VibeStream</span>
+        </div>
+      </div>
+
+      <div className="hidden md:flex flex-1 max-w-md mx-4">
+        <div className="relative w-full">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Sök efter livestreams..."
+            className="pl-9 bg-secondary border-none"
+          />
+        </div>
+      </div>
+
+      <div className="flex items-center gap-3">
+        {isLoggedIn ? (
+          <>
+            <Button variant="ghost" className="hidden sm:flex">Gå Live</Button>
+            <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white cursor-pointer">
+              <User className="w-5 h-5" />
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => setIsLoggedIn(false)}
+              className="flex gap-2"
+            >
+              <LogOut className="w-4 h-4" /> Logga ut
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button variant="ghost" onClick={() => setIsLoggedIn(true)}>
+              Logga in
+            </Button>
+            <Button 
+              className="bg-indigo-600 hover:bg-indigo-700"
+              onClick={() => setIsLoggedIn(true)}
+            >
+              Skapa konto
+            </Button>
+          </>
+        )}
+      </div>
+    </nav>
+  )
+}
