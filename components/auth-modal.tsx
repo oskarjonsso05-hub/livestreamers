@@ -47,6 +47,19 @@ interface AuthModalProps {
   defaultTab?: 'login' | 'register'
 }
 
+const getPasswordStrength = (password: string) => {
+  let score = 0
+  if (!password) return -1
+  if (password.length >= 8) score++
+  if (/[A-Z]/.test(password)) score++
+  if (/[0-9]/.test(password)) score++
+  if (/[^A-Za-z0-9]/.test(password)) score++
+  return score
+}
+
+const strengthLabels = ['Mycket svagt', 'Svagt', 'Ok', 'Starkt', 'Mycket starkt']
+const strengthColors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-emerald-500', 'bg-green-500']
+
 export function AuthModal({ isOpen, onClose, onLoginSuccess, defaultTab = 'login' }: AuthModalProps) {
   const [showForgotPassword, setShowForgotPassword] = useState(false)
 
@@ -59,6 +72,9 @@ export function AuthModal({ isOpen, onClose, onLoginSuccess, defaultTab = 'login
     resolver: zodResolver(registerSchema),
     defaultValues: { username: '', email: '', password: '' },
   })
+
+  const registerPassword = registerForm.watch('password')
+  const strength = getPasswordStrength(registerPassword)
 
   const forgotPasswordForm = useForm<z.infer<typeof forgotPasswordSchema>>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -174,6 +190,23 @@ export function AuthModal({ isOpen, onClose, onLoginSuccess, defaultTab = 'login
                         <FormControl>
                           <Input type="password" placeholder="••••••" {...field} />
                         </FormControl>
+                      {registerPassword && (
+                        <div className="space-y-1.5 mt-2">
+                          <div className="flex gap-1 h-1">
+                            {[0, 1, 2, 3, 4].map((i) => (
+                              <div
+                                key={i}
+                                className={`h-full flex-1 rounded-full transition-colors ${
+                                  i <= strength ? strengthColors[strength] : 'bg-secondary'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <p className="text-[10px] font-medium text-right text-muted-foreground">
+                            Styrka: <span className={strength >= 0 ? strengthColors[strength].replace('bg-', 'text-') : ''}>{strengthLabels[strength] || ''}</span>
+                          </p>
+                        </div>
+                      )}
                         <FormMessage />
                       </FormItem>
                     )}
