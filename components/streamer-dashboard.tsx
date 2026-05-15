@@ -7,16 +7,47 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { toast } from 'sonner'
-import { BarChart3, Video, Settings, Users, Camera, Radio } from 'lucide-react'
+import { BarChart3, Video, Settings, Users, Camera, Radio, DollarSign, Key, Copy } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+
+const recentDonations = [
+  { id: '1', user: 'ProGamer99', amount: '50 kr', message: 'Grym stream! 🔥', date: '2 min sedan' },
+  { id: '2', user: 'TechLover', amount: '100 kr', message: 'Tack för tipsen!', date: '15 min sedan' },
+  { id: '3', user: 'VibeWatcher', amount: '250 kr', message: 'Keep it up!', date: '1 tim sedan' },
+  { id: '4', user: 'Anonymous', amount: '20 kr', message: '', date: '2 tim sedan' },
+]
 
 export function StreamerDashboard() {
   const [title, setTitle] = useState('Vibe Coding - Skapar framtidens appar i realtid 🚀')
   const [category, setCategory] = useState('Software & Tech')
+  const [streamKey, setStreamKey] = useState('sk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx') // Mock stream key
 
   const handleSave = () => {
     toast.success('Stream-inställningar har sparats!')
     console.log('Sparat:', { title, category })
+  }
+
+  const generateNewStreamKey = () => {
+    const newKey = `sk_${Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}`
+    setStreamKey(newKey)
+    toast.info('En ny stream-nyckel har genererats!')
+  }
+
+  const copyStreamKey = async () => {
+    try {
+      await navigator.clipboard.writeText(streamKey)
+      toast.success('Stream-nyckel kopierad till urklipp!')
+    } catch (err) {
+      toast.error('Kunde inte kopiera stream-nyckel.')
+    }
   }
 
   return (
@@ -115,6 +146,41 @@ export function StreamerDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      <Card className="border-indigo-500/20">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <DollarSign className="w-5 h-5 text-indigo-500" /> Senaste donationer
+          </CardTitle>
+          <CardDescription>
+            En lista över de senaste bidragen från dina tittare.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Användare</TableHead>
+                <TableHead>Belopp</TableHead>
+                <TableHead className="hidden md:table-cell">Meddelande</TableHead>
+                <TableHead className="text-right">Tid</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {recentDonations.map((donation) => (
+                <TableRow key={donation.id}>
+                  <TableCell className="font-medium text-indigo-500">{donation.user}</TableCell>
+                  <TableCell className="font-bold">{donation.amount}</TableCell>
+                  <TableCell className="text-muted-foreground hidden md:table-cell italic">
+                    {donation.message || '-'}
+                  </TableCell>
+                  <TableCell className="text-right text-xs text-muted-foreground">{donation.date}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   )
 }
