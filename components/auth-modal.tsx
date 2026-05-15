@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { ChevronLeft } from 'lucide-react'
+import { ChevronLeft, Github } from 'lucide-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { Button } from '@/components/ui/button'
@@ -181,6 +181,7 @@ export function AuthModal({ isOpen, onClose, onLoginSuccess, defaultTab = 'login
                   <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700">Logga in</Button>
                 </form>
               </Form>
+              <SocialLogins />
             </TabsContent>
 
             <TabsContent value="register" className="space-y-4 pt-4">
@@ -228,6 +229,7 @@ export function AuthModal({ isOpen, onClose, onLoginSuccess, defaultTab = 'login
                   <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700">Skapa konto</Button>
                 </form>
               </Form>
+              <SocialLogins />
             </TabsContent>
           </Tabs>
         )}
