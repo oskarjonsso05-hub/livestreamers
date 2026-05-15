@@ -3,8 +3,9 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Search, Video, User, LogOut } from 'lucide-react'
+import { Search, Video, User, LogOut, LayoutDashboard } from 'lucide-react'
 import { AuthModal } from '@/components/auth-modal'
+import Link from 'next/link'
 
 export function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -20,10 +21,10 @@ export function Navbar() {
     <>
       <nav className="fixed top-0 w-full z-50 bg-background border-b border-border h-16 flex items-center px-4 justify-between">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 font-bold text-xl text-primary cursor-pointer">
+          <Link href="/" className="flex items-center gap-2 font-bold text-xl text-primary cursor-pointer">
             <Video className="w-8 h-8 text-indigo-500" />
             <span>VibeStream</span>
-          </div>
+          </Link>
         </div>
 
         <div className="hidden md:flex flex-1 max-w-md mx-4">
@@ -40,7 +41,11 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           {isLoggedIn ? (
             <>
-              <Button variant="ghost" className="hidden sm:flex">Gå Live</Button>
+              <Link href="/dashboard">
+                <Button variant="ghost" className="hidden sm:flex gap-2 text-indigo-500 font-semibold">
+                  <LayoutDashboard className="w-4 h-4" /> Dashboard
+                </Button>
+              </Link>
               <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white cursor-pointer">
                 <User className="w-5 h-5" />
               </div>
